@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Diariocal</string>
+    <string name="nome">Nome</string>
+    <string name="limpar">Limpar</string>
+    <string name="quantidade">Quantidade de calorias</string>
+    <string name="erro_nome">Nome não pode estar vazio!</string>
+    <string name="erro_quantidade">Quantidade não pode estar vazia!</string>
+    <string name="campos_limpos">Campos limpos</string>
+    <string name="alimento_fresco">Alimento fresco</string>
+</resources>
