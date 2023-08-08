@@ -2,16 +2,24 @@ package com.projeto.diariocal;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
     private EditText editTextNome, editTextQuantidade;
     private CheckBox cbAlimentoFresco;
+
+    private RadioGroup radioGroupUnidadeMedida;
+    private Spinner spinnerCategoria;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,12 +29,31 @@ public class MainActivity extends AppCompatActivity {
         editTextNome = findViewById(R.id.editTextNome);
         editTextQuantidade = findViewById(R.id.editTextQuantidade);
         cbAlimentoFresco = findViewById(R.id.checkBoxAliFresco);
+        radioGroupUnidadeMedida = findViewById(R.id.rgUnidadeMedida);
+        spinnerCategoria = findViewById(R.id.spinnerCategoria);
+
+        popularSpinner();
+    }
+
+    private void popularSpinner() {
+        ArrayList<String> lista = new ArrayList<>();
+
+        lista.add("Frutas");
+        lista.add("Legumes");
+        lista.add("Carne");
+        lista.add("Laticínios");
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
+                                                            android.R.layout.simple_list_item_1,
+                                                            lista);
+        spinnerCategoria.setAdapter(adapter);
     }
 
     public void limparCampos(View view){
         editTextNome.setText(null);
         editTextQuantidade.setText(null);
         cbAlimentoFresco.setChecked(false);
+        radioGroupUnidadeMedida.clearCheck();
 
         editTextNome.requestFocus();
 
@@ -35,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
                               Toast.LENGTH_SHORT).show();
     }
 
-    public void resumoAlimento(View view){
+    public void salvar(View view){
         String nome = editTextNome.getText().toString();
         String quantidade = editTextQuantidade.getText().toString();
 
@@ -48,6 +75,12 @@ public class MainActivity extends AppCompatActivity {
         if (quantidade == null || quantidade.trim().isEmpty()) {
             Toast.makeText(this, R.string.erro_quantidade, Toast.LENGTH_SHORT).show();
             editTextQuantidade.requestFocus();
+            return;
+        }
+
+        if (radioGroupUnidadeMedida.getCheckedRadioButtonId() == -1) {
+            Toast.makeText(this, R.string.erro_unidade_medida, Toast.LENGTH_SHORT).show();
+            radioGroupUnidadeMedida.requestFocus();
             return;
         }
 

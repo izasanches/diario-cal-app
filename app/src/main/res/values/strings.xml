@@ -2,9 +2,13 @@
     <string name="app_name">Diariocal</string>
     <string name="nome">Nome</string>
     <string name="limpar">Limpar</string>
-    <string name="quantidade">Quantidade de calorias</string>
+    <string name="quantidade">Quantidade de calorias (a cada 100 gramas/ml)</string>
     <string name="erro_nome">Nome não pode estar vazio!</string>
     <string name="erro_quantidade">Quantidade não pode estar vazia!</string>
     <string name="campos_limpos">Campos limpos</string>
     <string name="alimento_fresco">Alimento fresco</string>
+    <string name="ml">ML</string>
+    <string name="gramas">Gramas</string>
+    <string name="erro_unidade_medida">É necessário selecionar uma unidade de medida</string>
+    <string name="salvar">Salvar</string>
 </resources>
