@@ -17,7 +17,6 @@ public class MainActivity extends AppCompatActivity {
 
     private EditText editTextNome, editTextQuantidade;
     private CheckBox cbAlimentoFresco;
-
     private RadioGroup radioGroupUnidadeMedida;
     private Spinner spinnerCategoria;
 
@@ -31,8 +30,6 @@ public class MainActivity extends AppCompatActivity {
         cbAlimentoFresco = findViewById(R.id.checkBoxAliFresco);
         radioGroupUnidadeMedida = findViewById(R.id.rgUnidadeMedida);
         spinnerCategoria = findViewById(R.id.spinnerCategoria);
-
-        popularSpinner();
     }
 
     private void popularSpinner() {
@@ -54,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
         editTextQuantidade.setText(null);
         cbAlimentoFresco.setChecked(false);
         radioGroupUnidadeMedida.clearCheck();
+        spinnerCategoria.setSelection(0);
 
         editTextNome.requestFocus();
 
@@ -84,9 +82,11 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        Toast.makeText(this,
-                          nome.trim() + " " + quantidade.trim(),
-                            Toast.LENGTH_SHORT).show();
+        if (spinnerCategoria.getSelectedItemPosition() < 0) {
+            Toast.makeText(this, R.string.erro_categoria, Toast.LENGTH_SHORT).show();
+            spinnerCategoria.requestFocus();
+            return;
+        }
 
     }
 }

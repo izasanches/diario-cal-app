@@ -10,5 +10,11 @@
     <string name="ml">ML</string>
     <string name="gramas">Gramas</string>
     <string name="erro_unidade_medida">É necessário selecionar uma unidade de medida</string>
+    <string name="erro_categoria">É necessário selecionar uma categoria</string>
     <string name="salvar">Salvar</string>
+    <string name="categoria">Categoria</string>
+    <string name="frutas">Frutas</string>
+    <string name="legumes">Legumes</string>
+    <string name="carnes">Carnes</string>
+    <string name="laticinios">Latícinios</string>
 </resources>

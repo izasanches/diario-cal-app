@@ -1,0 +1,8 @@
+<resources>
+    <string-array name="categoria_itens">
+        <item>@string/frutas</item>
+        <item>@string/legumes</item>
+        <item>@string/carnes</item>
+        <item>@string/laticinios</item>
+    </string-array>
+</resources>
