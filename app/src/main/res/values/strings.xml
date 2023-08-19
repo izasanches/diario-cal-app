@@ -17,4 +17,8 @@
     <string name="legumes">Legumes</string>
     <string name="carnes">Carnes</string>
     <string name="laticinios">Latícinios</string>
+    <string name="cadastrar_categoria_alimento">Cadastrar categoria alimento</string>
+    <string name="cadastrar_alimento">Cadastrar alimento</string>
+    <string name="cadastrar_refeicao">Cadastrar refeição</string>
+    <string name="cadastrar_diario">Cadastrar diário</string>
 </resources>
