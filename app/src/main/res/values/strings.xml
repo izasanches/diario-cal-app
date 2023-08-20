@@ -21,4 +21,11 @@
     <string name="cadastrar_alimento">Cadastrar alimento</string>
     <string name="cadastrar_refeicao">Cadastrar refeição</string>
     <string name="cadastrar_diario">Cadastrar diário</string>
+    <string name="banana">Banana</string>
+    <string name="file_frango">Filé de Frango</string>
+    <string name="agua_gas">Água com gás</string>
+    <string name="fruta">Fruta</string>
+    <string name="carne">Carne</string>
+    <string name="bebida">Bebida</string>
+    <string name="cha">Chá</string>
 </resources>

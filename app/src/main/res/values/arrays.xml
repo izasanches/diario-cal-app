@@ -5,4 +5,40 @@
         <item>@string/carnes</item>
         <item>@string/laticinios</item>
     </string-array>
+
+    <string-array name="alimento_nomes">
+        <item>@string/banana</item>
+        <item>@string/file_frango</item>
+        <item>@string/agua_gas</item>
+        <item>@string/cha</item>
+    </string-array>
+
+    <string-array name="calorias">
+        <item>100</item>
+        <item>80</item>
+        <item>0</item>
+        <item>40</item>
+    </string-array>
+
+    <string-array name="unidade_medida">
+        <item>@string/gramas</item>
+        <item>@string/gramas</item>
+        <item>@string/ml</item>
+        <item>@string/ml</item>
+    </string-array>
+
+    <string-array name="categoria_alimento">
+        <item>@string/fruta</item>
+        <item>@string/carnes</item>
+        <item>@string/bebida</item>
+        <item>@string/bebida</item>
+    </string-array>
+
+    <string-array name="alimento_fresco">
+        <item>True</item>
+        <item>False</item>
+        <item>False</item>
+        <item>False</item>
+    </string-array>
+
 </resources>
