@@ -3,12 +3,11 @@ package com.projeto.diariocal;
 public class Alimento {
     private String nome;
     private double quantidadeCal;
-    //TODO: pode ser um ENUM
-    private String unidadeMedida;
+    private UnidadeMedida unidadeMedida;
     private String categoria;
     private boolean alimentoFresco;
 
-    public Alimento(String nome, double quantidadeCal, String unidadeMedida,
+    public Alimento(String nome, double quantidadeCal, UnidadeMedida unidadeMedida,
                     String categoria, boolean alimentoFresco) {
         this.nome = nome;
         this.quantidadeCal = quantidadeCal;
@@ -33,11 +32,11 @@ public class Alimento {
         this.quantidadeCal = quantidadeCal;
     }
 
-    public String getUnidadeMedida() {
+    public UnidadeMedida getUnidadeMedida() {
         return unidadeMedida;
     }
 
-    public void setUnidadeMedida(String unidadeMedida) {
+    public void setUnidadeMedida(UnidadeMedida unidadeMedida) {
         this.unidadeMedida = unidadeMedida;
     }
 

@@ -20,12 +20,12 @@
         <item>40</item>
     </string-array>
 
-    <string-array name="unidade_medida">
-        <item>@string/gramas</item>
-        <item>@string/gramas</item>
-        <item>@string/ml</item>
-        <item>@string/ml</item>
-    </string-array>
+    <integer-array name="unidade_medida">
+        <item>0</item>
+        <item>0</item>
+        <item>1</item>
+        <item>1</item>
+    </integer-array>
 
     <string-array name="categoria_alimento">
         <item>@string/fruta</item>
@@ -34,11 +34,11 @@
         <item>@string/bebida</item>
     </string-array>
 
-    <string-array name="alimento_fresco">
-        <item>True</item>
-        <item>False</item>
-        <item>False</item>
-        <item>False</item>
-    </string-array>
+    <integer-array name="alimento_fresco">
+        <item>1</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+    </integer-array>
 
 </resources>

@@ -28,4 +28,10 @@
     <string name="carne">Carne</string>
     <string name="bebida">Bebida</string>
     <string name="cha">Chá</string>
+    <string name="alimento_nome">Alimento de nome \"</string>
+    <string name="foi_clicado">\"\ foi clicado!</string>
+    <string name="calorias">Calorias</string>
+    <string name="calorias_cada_100">calorias a cada 100</string>
+    <string name="alimento_processado">Alimento processado</string>
+
 </resources>
