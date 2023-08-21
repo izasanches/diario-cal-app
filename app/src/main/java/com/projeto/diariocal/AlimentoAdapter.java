@@ -7,9 +7,9 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.List;
-import java.util.Locale;
 
 public class AlimentoAdapter extends BaseAdapter {
 
@@ -29,7 +29,7 @@ public class AlimentoAdapter extends BaseAdapter {
     public AlimentoAdapter(Context context, List<Alimento> alimentos) {
         this.context = context;
         this.alimentos = alimentos;
-        numberFormat = NumberFormat.getCurrencyInstance(new Locale("pt","BR"));
+        DecimalFormat numberFormat = new DecimalFormat("#,###.00");
     }
 
     @Override

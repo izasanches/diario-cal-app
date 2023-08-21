@@ -33,5 +33,14 @@
     <string name="calorias">Calorias</string>
     <string name="calorias_cada_100">calorias a cada 100</string>
     <string name="alimento_processado">Alimento processado</string>
+    <string name="arroz">Arroz</string>
+    <string name="feijao">Feijão</string>
+    <string name="batata_frita">Batata frita</string>
+    <string name="laranja">Laranja</string>
+    <string name="pera">Pêra</string>
+    <string name="pao_forma">Pão de forma</string>
+    <string name="cereal">Cereal</string>
+    <string name="vegetal">Vegetal</string>
+    <string name="massa">Massa</string>
 
 </resources>

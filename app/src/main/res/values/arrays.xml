@@ -11,6 +11,12 @@
         <item>@string/file_frango</item>
         <item>@string/agua_gas</item>
         <item>@string/cha</item>
+        <item>@string/arroz</item>
+        <item>@string/feijao</item>
+        <item>@string/batata_frita</item>
+        <item>@string/laranja</item>
+        <item>@string/pera</item>
+        <item>@string/pao_forma</item>
     </string-array>
 
     <string-array name="calorias">
@@ -18,6 +24,12 @@
         <item>80</item>
         <item>0</item>
         <item>40</item>
+        <item>100</item>
+        <item>80</item>
+        <item>140</item>
+        <item>40</item>
+        <item>60</item>
+        <item>160</item>
     </string-array>
 
     <integer-array name="unidade_medida">
@@ -25,6 +37,12 @@
         <item>0</item>
         <item>1</item>
         <item>1</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
     </integer-array>
 
     <string-array name="categoria_alimento">
@@ -32,6 +50,12 @@
         <item>@string/carnes</item>
         <item>@string/bebida</item>
         <item>@string/bebida</item>
+        <item>@string/cereal</item>
+        <item>@string/cereal</item>
+        <item>@string/vegetal</item>
+        <item>@string/fruta</item>
+        <item>@string/fruta</item>
+        <item>@string/massa</item>
     </string-array>
 
     <integer-array name="alimento_fresco">
@@ -39,6 +63,12 @@
         <item>0</item>
         <item>0</item>
         <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>1</item>
     </integer-array>
 
 </resources>
