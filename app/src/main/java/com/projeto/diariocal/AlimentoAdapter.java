@@ -8,14 +8,12 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.List;
 
 public class AlimentoAdapter extends BaseAdapter {
 
     private Context context;
     private List<Alimento> alimentos;
-    private NumberFormat numberFormat;
 
     private static class AlimentoHolder {
         public TextView textViewValorNome;
@@ -29,7 +27,7 @@ public class AlimentoAdapter extends BaseAdapter {
     public AlimentoAdapter(Context context, List<Alimento> alimentos) {
         this.context = context;
         this.alimentos = alimentos;
-        DecimalFormat numberFormat = new DecimalFormat("#,###.00");
+        //DecimalFormat numberFormat = new DecimalFormat("#,###.00");
     }
 
     @Override
@@ -72,7 +70,8 @@ public class AlimentoAdapter extends BaseAdapter {
 
         holder.textViewValorNome.setText(alimentos.get(i).getNome());
 
-        String quantidadeCal = numberFormat.format(alimentos.get(i).getQuantidadeCal());
+        DecimalFormat df = new DecimalFormat("0.00");
+        String quantidadeCal = df.format(alimentos.get(i).getQuantidadeCal());
 
         holder.textViewValorQuantidadeCal.setText(quantidadeCal);
 
