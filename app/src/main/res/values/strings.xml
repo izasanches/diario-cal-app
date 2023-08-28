@@ -42,5 +42,13 @@
     <string name="cereal">Cereal</string>
     <string name="vegetal">Vegetal</string>
     <string name="massa">Massa</string>
+    <string name="novo">Novo</string>
+    <string name="sobre">Sobre</string>
+    <string name="sobre_objetivo">Aplicativo para calcular calorias diárias</string>
+    <string name="autor_aluna">Aluna: Izabele Sanches de Medeiros</string>
+    <string name="voltar">Voltar</string>
+    <string name="cancelar">Cancelar</string>
+    <string name="email">E-mail: izabele.sanches@hotmail.com</string>
+    <string name="nome_curso">Curso: Pós Graduação em Java - UTFPR</string>
 
 </resources>

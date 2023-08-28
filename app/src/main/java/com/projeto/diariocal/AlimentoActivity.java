@@ -1,19 +1,20 @@
 package com.projeto.diariocal;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import java.util.ArrayList;
 
 public class AlimentoActivity extends AppCompatActivity {
 
     private ListView listViewAlimento;
     private ArrayList<Alimento> alimentos;
+    private AlimentoAdapter listaAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,24 +41,46 @@ public class AlimentoActivity extends AppCompatActivity {
 
     private void popularLista() {
 
-        String[] nomes = getResources().getStringArray(R.array.alimento_nomes);
-        String[] calorias = getResources().getStringArray(R.array.calorias);
-        int[] unidadeMedida = getResources().getIntArray(R.array.unidade_medida);
-        String[] categoriaAlimento = getResources().getStringArray(R.array.categoria_alimento);
-        int[] alimentoFresco = getResources().getIntArray(R.array.alimento_fresco);
-
         alimentos = new ArrayList<>();
-        UnidadeMedida[] unidadeMedidas = UnidadeMedida.values();
 
-        for (int cont = 0; cont < nomes.length; cont++) {
-            alimentos.add(new Alimento(nomes[cont],
-                    Double.parseDouble(calorias[cont]),
-                    unidadeMedidas[unidadeMedida[cont]],
-                    categoriaAlimento[cont],
-                    alimentoFresco[cont] == 0 ? false : true));
+        listaAdapter = new AlimentoAdapter(this, alimentos);
+        listViewAlimento.setAdapter(listaAdapter);
+
+    }
+
+    public void adicionarAlimento(View view) {
+        MainActivity.novoAlimento(this);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode,
+                                    int resultCode,
+                                    Intent data) {
+
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK) {
+
+            Bundle bundle = data.getExtras();
+
+            String nome = bundle.getString(MainActivity.NOME);
+            double quantidadeCal = Double.parseDouble(bundle.getString(MainActivity.QUANTIDADE_CAL));
+            UnidadeMedida[] unidadeMedidas = UnidadeMedida.values();
+            UnidadeMedida unidadeMedida = unidadeMedidas[bundle.getInt(MainActivity.UNIDADE_MEDIDA)];
+            String categoria = bundle.getString(MainActivity.CATEGORIA);
+            boolean alimentoFresco = bundle.getBoolean(MainActivity.ALIMENTO_FRESCO);
+
+
+            Alimento alimento = new Alimento(nome, quantidadeCal, unidadeMedida,
+                    categoria, alimentoFresco);
+
+            alimentos.add(alimento);
+
+
+            listaAdapter.notifyDataSetChanged();
         }
+    }
 
-        AlimentoAdapter alimentoAdapter = new AlimentoAdapter(this, alimentos);
-        listViewAlimento.setAdapter(alimentoAdapter);
+    public void abrirSobre(View view){
+        SobreActivity.sobre(this);
     }
 }

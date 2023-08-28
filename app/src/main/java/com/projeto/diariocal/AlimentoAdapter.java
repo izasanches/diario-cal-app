@@ -27,7 +27,6 @@ public class AlimentoAdapter extends BaseAdapter {
     public AlimentoAdapter(Context context, List<Alimento> alimentos) {
         this.context = context;
         this.alimentos = alimentos;
-        //DecimalFormat numberFormat = new DecimalFormat("#,###.00");
     }
 
     @Override
@@ -83,6 +82,8 @@ public class AlimentoAdapter extends BaseAdapter {
                 holder.textViewValorUnidadeMedida.setText(R.string.ml);
                 break;
         }
+
+        holder.textViewValorCategoria.setText(alimentos.get(i).getCategoria());
 
         if (alimentos.get(i).isAlimentoFresco()) {
             holder.textViewValorFresco.setText(context.getResources().getString(R.string.alimento_fresco));

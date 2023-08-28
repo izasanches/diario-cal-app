@@ -1,8 +1,9 @@
 package com.projeto.diariocal;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioGroup;
@@ -11,14 +12,24 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.util.ArrayList;
-
 public class MainActivity extends AppCompatActivity {
 
     private EditText editTextNome, editTextQuantidade;
     private CheckBox cbAlimentoFresco;
     private RadioGroup radioGroupUnidadeMedida;
     private Spinner spinnerCategoria;
+    public static final String NOME = "NOME";
+    public static final String QUANTIDADE_CAL = "QUANTIDADE_CAL";
+    public static final String UNIDADE_MEDIDA = "UNIDADE_MEDIDA";
+    public static final String CATEGORIA = "CATEGORIA";
+    public static final String ALIMENTO_FRESCO = "ALIMENTO_FRESCO";
+    public static final int NOVO = 1;
+
+
+    public static void novoAlimento(AppCompatActivity activity){
+        Intent intent = new Intent(activity, MainActivity.class);
+        activity.startActivityForResult(intent, NOVO);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,20 +41,8 @@ public class MainActivity extends AppCompatActivity {
         cbAlimentoFresco = findViewById(R.id.checkBoxAliFresco);
         radioGroupUnidadeMedida = findViewById(R.id.rgUnidadeMedida);
         spinnerCategoria = findViewById(R.id.spinnerCategoria);
-    }
 
-    private void popularSpinner() {
-        ArrayList<String> lista = new ArrayList<>();
-
-        lista.add("Frutas");
-        lista.add("Legumes");
-        lista.add("Carne");
-        lista.add("Laticínios");
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
-                                                            android.R.layout.simple_list_item_1,
-                                                            lista);
-        spinnerCategoria.setAdapter(adapter);
+        setTitle("Cadastro de alimento");
     }
 
     public void limparCampos(View view){
@@ -82,11 +81,45 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        if (spinnerCategoria.getSelectedItemPosition() < 0) {
-            Toast.makeText(this, R.string.erro_categoria, Toast.LENGTH_SHORT).show();
+        int unidadeMedida;
+
+        if(radioGroupUnidadeMedida.getCheckedRadioButtonId() == R.id.radioButtonGramas)
+            unidadeMedida = UnidadeMedida.GRAMA.value;
+        else
+            unidadeMedida = UnidadeMedida.MILILITRO.value;
+
+        String categoria = (String) spinnerCategoria.getSelectedItem();
+
+        if (categoria == null) {
+            Toast.makeText(this,
+                    getString(R.string.erro_categoria),
+                    Toast.LENGTH_SHORT).show();
             spinnerCategoria.requestFocus();
             return;
         }
 
+        boolean alimentoFresco = cbAlimentoFresco.isChecked();
+
+        Intent intent = new Intent();
+        intent.putExtra(NOME,  nome);
+        intent.putExtra(QUANTIDADE_CAL, quantidade);
+        intent.putExtra(UNIDADE_MEDIDA,  unidadeMedida);
+        intent.putExtra(CATEGORIA, categoria);
+        intent.putExtra(ALIMENTO_FRESCO, alimentoFresco);
+
+        setResult(Activity.RESULT_OK, intent);
+
+        finish();
+
+    }
+
+    public void cancelar(View view){
+        onBackPressed();
+    }
+
+    @Override
+    public void onBackPressed() {
+        setResult(Activity.RESULT_CANCELED);
+        finish();
     }
 }

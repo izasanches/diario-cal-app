@@ -75,6 +75,7 @@
             android:id="@+id/radioButtonGramas"
             android:layout_width="99dp"
             android:layout_height="wrap_content"
+            android:checked="false"
             android:text="@string/gramas" />
 
         <RadioButton
@@ -97,12 +98,12 @@
         app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/buttonCancelar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:onClick="limparCampos"
-        android:text="@string/limpar"
+        android:onClick="cancelar"
+        android:text="@string/cancelar"
         app:layout_constraintEnd_toEndOf="@+id/editTextQuantidade"
         app:layout_constraintTop_toBottomOf="@+id/checkBoxAliFresco" />
 
