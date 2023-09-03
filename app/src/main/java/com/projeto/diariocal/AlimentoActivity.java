@@ -4,83 +4,122 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
-import java.util.ArrayList;
 
 public class AlimentoActivity extends AppCompatActivity {
 
-    private ListView listViewAlimento;
-    private ArrayList<Alimento> alimentos;
-    private AlimentoAdapter listaAdapter;
+    private EditText editTextNome, editTextQuantidade;
+    private CheckBox cbAlimentoFresco;
+    private RadioGroup radioGroupUnidadeMedida;
+    private Spinner spinnerCategoria;
+    public static final String NOME = "NOME";
+    public static final String QUANTIDADE_CAL = "QUANTIDADE_CAL";
+    public static final String UNIDADE_MEDIDA = "UNIDADE_MEDIDA";
+    public static final String CATEGORIA = "CATEGORIA";
+    public static final String ALIMENTO_FRESCO = "ALIMENTO_FRESCO";
+    public static final int NOVO = 1;
+
+
+    public static void novoAlimento(AppCompatActivity activity){
+        Intent intent = new Intent(activity, AlimentoActivity.class);
+        activity.startActivityForResult(intent, NOVO);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alimento);
 
-        listViewAlimento = findViewById(R.id.listViewAlimento);
+        editTextNome = findViewById(R.id.editTextNome);
+        editTextQuantidade = findViewById(R.id.editTextQuantidade);
+        cbAlimentoFresco = findViewById(R.id.checkBoxAliFresco);
+        radioGroupUnidadeMedida = findViewById(R.id.rgUnidadeMedida);
+        spinnerCategoria = findViewById(R.id.spinnerCategoria);
 
-        listViewAlimento.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                Alimento alimento = (Alimento) listViewAlimento.getItemAtPosition(position);
-
-                Toast.makeText(getApplicationContext(),
-                        getString(R.string.alimento_nome)
-                                + alimento.getNome() + getString(R.string.foi_clicado),
-                        Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        popularLista();
+        setTitle("Cadastro de alimento");
     }
 
-    private void popularLista() {
+    public void limparCampos(View view){
+        editTextNome.setText(null);
+        editTextQuantidade.setText(null);
+        cbAlimentoFresco.setChecked(false);
+        radioGroupUnidadeMedida.clearCheck();
+        spinnerCategoria.setSelection(0);
 
-        alimentos = new ArrayList<>();
+        editTextNome.requestFocus();
 
-        listaAdapter = new AlimentoAdapter(this, alimentos);
-        listViewAlimento.setAdapter(listaAdapter);
+        Toast.makeText(this,
+                              R.string.campos_limpos,
+                              Toast.LENGTH_SHORT).show();
+    }
+
+    public void salvar(View view){
+        String nome = editTextNome.getText().toString();
+        String quantidade = editTextQuantidade.getText().toString();
+
+        if (nome == null || nome.trim().isEmpty()) {
+            Toast.makeText(this, R.string.erro_nome, Toast.LENGTH_SHORT).show();
+            editTextNome.requestFocus();
+            return;
+        }
+
+        if (quantidade == null || quantidade.trim().isEmpty()) {
+            Toast.makeText(this, R.string.erro_quantidade, Toast.LENGTH_SHORT).show();
+            editTextQuantidade.requestFocus();
+            return;
+        }
+
+        if (radioGroupUnidadeMedida.getCheckedRadioButtonId() == -1) {
+            Toast.makeText(this, R.string.erro_unidade_medida, Toast.LENGTH_SHORT).show();
+            radioGroupUnidadeMedida.requestFocus();
+            return;
+        }
+
+        int unidadeMedida;
+
+        if(radioGroupUnidadeMedida.getCheckedRadioButtonId() == R.id.radioButtonGramas)
+            unidadeMedida = UnidadeMedida.GRAMA.value;
+        else
+            unidadeMedida = UnidadeMedida.MILILITRO.value;
+
+        String categoria = (String) spinnerCategoria.getSelectedItem();
+
+        if (categoria == null) {
+            Toast.makeText(this,
+                    getString(R.string.erro_categoria),
+                    Toast.LENGTH_SHORT).show();
+            spinnerCategoria.requestFocus();
+            return;
+        }
+
+        boolean alimentoFresco = cbAlimentoFresco.isChecked();
+
+        Intent intent = new Intent();
+        intent.putExtra(NOME,  nome);
+        intent.putExtra(QUANTIDADE_CAL, quantidade);
+        intent.putExtra(UNIDADE_MEDIDA,  unidadeMedida);
+        intent.putExtra(CATEGORIA, categoria);
+        intent.putExtra(ALIMENTO_FRESCO, alimentoFresco);
+
+        setResult(Activity.RESULT_OK, intent);
+
+        finish();
 
     }
 
-    public void adicionarAlimento(View view) {
-        MainActivity.novoAlimento(this);
+    public void cancelar(View view){
+        onBackPressed();
     }
 
     @Override
-    protected void onActivityResult(int requestCode,
-                                    int resultCode,
-                                    Intent data) {
-
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == Activity.RESULT_OK) {
-
-            Bundle bundle = data.getExtras();
-
-            String nome = bundle.getString(MainActivity.NOME);
-            double quantidadeCal = Double.parseDouble(bundle.getString(MainActivity.QUANTIDADE_CAL));
-            UnidadeMedida[] unidadeMedidas = UnidadeMedida.values();
-            UnidadeMedida unidadeMedida = unidadeMedidas[bundle.getInt(MainActivity.UNIDADE_MEDIDA)];
-            String categoria = bundle.getString(MainActivity.CATEGORIA);
-            boolean alimentoFresco = bundle.getBoolean(MainActivity.ALIMENTO_FRESCO);
-
-
-            Alimento alimento = new Alimento(nome, quantidadeCal, unidadeMedida,
-                    categoria, alimentoFresco);
-
-            alimentos.add(alimento);
-
-
-            listaAdapter.notifyDataSetChanged();
-        }
-    }
-
-    public void abrirSobre(View view){
-        SobreActivity.sobre(this);
+    public void onBackPressed() {
+        setResult(Activity.RESULT_CANCELED);
+        finish();
     }
 }
