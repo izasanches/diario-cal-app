@@ -96,6 +96,7 @@
         android:layout_marginTop="16dp"
         android:onClick="cancelar"
         android:text="@string/cancelar"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="@+id/editTextQuantidade"
         app:layout_constraintTop_toBottomOf="@+id/checkBoxAliFresco" />
 
@@ -106,6 +107,7 @@
         android:layout_marginTop="16dp"
         android:onClick="salvar"
         android:text="@string/salvar"
+        android:visibility="invisible"
         app:layout_constraintStart_toStartOf="@+id/checkBoxAliFresco"
         app:layout_constraintTop_toBottomOf="@+id/checkBoxAliFresco" />
 

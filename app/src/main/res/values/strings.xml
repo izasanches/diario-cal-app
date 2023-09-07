@@ -52,5 +52,6 @@
     <string name="nome_curso">Curso: Pós Graduação em Java - UTFPR</string>
     <string name="excluir">Excluir</string>
     <string name="adicionar">Adicionar</string>
+    <string name="alterar">Alterar</string>
 
 </resources>
