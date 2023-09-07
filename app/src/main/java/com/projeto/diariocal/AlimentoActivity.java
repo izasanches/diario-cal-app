@@ -70,14 +70,13 @@ public class AlimentoActivity extends AppCompatActivity {
         if (itemId == R.id.menuItemSalvar) {
             salvar();
             return true;
-        }
-
-        else if (itemId == R.id.menuItemCancelar) {
+        } else if (itemId == R.id.menuItemLimpar) {
+            limparCampos();
+            return true;
+        } else if (itemId == android.R.id.home) {
             cancelar();
             return true;
-        }
-
-        else {
+        } else {
             return super.onOptionsItemSelected(item);
         }
     }
@@ -149,7 +148,7 @@ public class AlimentoActivity extends AppCompatActivity {
         }
     }
 
-    public void limparCampos(View view){
+    public void limparCampos(){
         editTextNome.setText(null);
         editTextQuantidade.setText(null);
         cbAlimentoFresco.setChecked(false);
