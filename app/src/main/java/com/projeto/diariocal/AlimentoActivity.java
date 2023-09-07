@@ -13,6 +13,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class AlimentoActivity extends AppCompatActivity {
@@ -28,11 +29,38 @@ public class AlimentoActivity extends AppCompatActivity {
     public static final String ALIMENTO_FRESCO = "ALIMENTO_FRESCO";
     public static final int NOVO = 1;
     public static final int ALTERAR = 2;
-
+    public static final String MODO = "MODO";
+    private int modo;
+    private String nomeOriginal, categoriaOriginal;
+    private Double quantidadeOriginal;
+    private UnidadeMedida unidadeMedidaOriginal;
+    private Boolean aliFrescoOriginal;
 
     public static void novoAlimento(AppCompatActivity activity){
         Intent intent = new Intent(activity, AlimentoActivity.class);
+        intent.putExtra(MODO, NOVO);
         activity.startActivityForResult(intent, NOVO);
+    }
+
+    public static void alterarAlimento(AppCompatActivity activity, Alimento alimento) {
+        Intent intent = new Intent(activity, AlimentoActivity.class);
+
+        intent.putExtra(MODO, ALTERAR);
+        intent.putExtra(NOME, alimento.getNome());
+
+        intent.putExtra(MODO, ALTERAR);
+        intent.putExtra(QUANTIDADE_CAL, alimento.getQuantidadeCal());
+
+        intent.putExtra(MODO, ALTERAR);
+        intent.putExtra(UNIDADE_MEDIDA, alimento.getUnidadeMedida());
+
+        intent.putExtra(MODO, ALTERAR);
+        intent.putExtra(CATEGORIA, alimento.getCategoria());
+
+        intent.putExtra(MODO, ALTERAR);
+        intent.putExtra(ALIMENTO_FRESCO, alimento.isAlimentoFresco());
+
+        activity.startActivityForResult(intent, ALTERAR);
     }
 
     @Override
@@ -52,10 +80,6 @@ public class AlimentoActivity extends AppCompatActivity {
         else {
             return super.onOptionsItemSelected(item);
         }
-
-
-
-
     }
 
     @Override
@@ -69,13 +93,60 @@ public class AlimentoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alimento);
 
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null){
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+
         editTextNome = findViewById(R.id.editTextNome);
         editTextQuantidade = findViewById(R.id.editTextQuantidade);
         cbAlimentoFresco = findViewById(R.id.checkBoxAliFresco);
         radioGroupUnidadeMedida = findViewById(R.id.rgUnidadeMedida);
         spinnerCategoria = findViewById(R.id.spinnerCategoria);
 
-        setTitle("Cadastro de alimento");
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
+
+        if (bundle != null){
+
+            modo = bundle.getInt(MODO, NOVO);
+
+            if (modo == NOVO){
+                setTitle(getString(R.string.cadastro_alimento));
+            } else {
+                nomeOriginal = bundle.getString(NOME);
+                editTextNome.setText(nomeOriginal);
+
+                quantidadeOriginal = bundle.getDouble(QUANTIDADE_CAL);
+                editTextQuantidade.setText(quantidadeOriginal.toString());
+
+                unidadeMedidaOriginal = (UnidadeMedida) bundle.get(UNIDADE_MEDIDA);
+
+                if (unidadeMedidaOriginal.value == UnidadeMedida.GRAMA.value)
+                    radioGroupUnidadeMedida.check(R.id.radioButtonGramas);
+                else
+                    radioGroupUnidadeMedida.check(R.id.radioButtonLitros);
+
+                categoriaOriginal = bundle.getString(CATEGORIA);
+                int posicaoSpinner = -1;
+
+                for (int i = 0; i < spinnerCategoria.getCount(); i++) {
+                    String categTexto = spinnerCategoria.getItemAtPosition(i).toString();
+
+                    if (categTexto.equals(categoriaOriginal)) {
+                        posicaoSpinner = i;
+                        break;
+                    }
+                }
+                spinnerCategoria.setSelection(posicaoSpinner);
+
+                aliFrescoOriginal = bundle.getBoolean(ALIMENTO_FRESCO);
+
+                cbAlimentoFresco.setChecked(aliFrescoOriginal);
+
+                setTitle(getString(R.string.edicao_alimento));
+            }
+        }
     }
 
     public void limparCampos(View view){

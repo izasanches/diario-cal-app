@@ -131,16 +131,10 @@ public class MenuActivity extends AppCompatActivity {
     }
 
     private void popularLista() {
-
         alimentos = new ArrayList<>();
 
         listaAdapter = new AlimentoAdapter(this, alimentos);
         listViewAlimento.setAdapter(listaAdapter);
-
-    }
-
-    public void adicionarAlimento(View view) {
-        AlimentoActivity.novoAlimento(this);
     }
 
     public void adicionarAlimento() {
@@ -169,7 +163,7 @@ public class MenuActivity extends AppCompatActivity {
             String categoria = bundle.getString(AlimentoActivity.CATEGORIA);
             boolean alimentoFresco = bundle.getBoolean(AlimentoActivity.ALIMENTO_FRESCO);
 
-            if (resultCode == AlimentoActivity.ALTERAR) {
+            if (requestCode == AlimentoActivity.ALTERAR) {
                 Alimento alimento = alimentos.get(posicaoSelecionada);
                 alimento.setNome(nome);
                 alimento.setQuantidadeCal(quantidadeCal);
@@ -199,11 +193,7 @@ public class MenuActivity extends AppCompatActivity {
 
         Alimento alimento = alimentos.get(posicaoSelecionada);
 
-        //AlimentoActivity.alterarAlimento(this, alimento);
-    }
-
-    public void abrirSobre(View view){
-        SobreActivity.sobre(this);
+        AlimentoActivity.alterarAlimento(this, alimento);
     }
 
     public void abrirSobre(){
