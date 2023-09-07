@@ -19,6 +19,7 @@ public class MenuActivity extends AppCompatActivity {
     private ListView listViewAlimento;
     private ArrayList<Alimento> alimentos;
     private AlimentoAdapter listaAdapter;
+    private int posicaoSelecionada = -1;
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -91,7 +92,7 @@ public class MenuActivity extends AppCompatActivity {
                                     int resultCode,
                                     Intent data) {
 
-        super.onActivityResult(requestCode, resultCode, data);
+        //super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
 
             Bundle bundle = data.getExtras();
@@ -103,16 +104,38 @@ public class MenuActivity extends AppCompatActivity {
             String categoria = bundle.getString(AlimentoActivity.CATEGORIA);
             boolean alimentoFresco = bundle.getBoolean(AlimentoActivity.ALIMENTO_FRESCO);
 
+            if (resultCode == AlimentoActivity.ALTERAR) {
+                Alimento alimento = alimentos.get(posicaoSelecionada);
+                alimento.setNome(nome);
+                alimento.setQuantidadeCal(quantidadeCal);
+                alimento.setUnidadeMedida(unidadeMedida);
+                alimento.setCategoria(categoria);
+                alimento.setAlimentoFresco(alimentoFresco);
 
-            Alimento alimento = new Alimento(nome, quantidadeCal, unidadeMedida,
-                    categoria, alimentoFresco);
+                posicaoSelecionada = -1;
+            } else {
+                Alimento alimento = new Alimento(nome, quantidadeCal, unidadeMedida,
+                        categoria, alimentoFresco);
 
-            alimentos.add(alimento);
-
+                alimentos.add(alimento);
+            }
 
             listaAdapter.notifyDataSetChanged();
         }
     }
+
+    private void excluirPessoa(){
+
+        alimentos.remove(posicaoSelecionada);
+        listaAdapter.notifyDataSetChanged();
+    }
+/*
+    private void alterarPessoa(){
+
+        Alimento alimento = alientos.get(posicaoSelecionada);
+
+        AlimentoActivity.alterarAlimento(this, alimento);
+    }*/
 
     public void abrirSobre(View view){
         SobreActivity.sobre(this);

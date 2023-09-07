@@ -27,6 +27,7 @@ public class AlimentoActivity extends AppCompatActivity {
     public static final String CATEGORIA = "CATEGORIA";
     public static final String ALIMENTO_FRESCO = "ALIMENTO_FRESCO";
     public static final int NOVO = 1;
+    public static final int ALTERAR = 2;
 
 
     public static void novoAlimento(AppCompatActivity activity){
