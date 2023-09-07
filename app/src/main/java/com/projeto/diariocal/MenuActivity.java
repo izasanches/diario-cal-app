@@ -2,16 +2,19 @@ package com.projeto.diariocal;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.ActionMode;
+
 import java.util.ArrayList;
 
 public class MenuActivity extends AppCompatActivity {
@@ -20,6 +23,52 @@ public class MenuActivity extends AppCompatActivity {
     private ArrayList<Alimento> alimentos;
     private AlimentoAdapter listaAdapter;
     private int posicaoSelecionada = -1;
+    private View viewSelecionada;
+    private ActionMode actionMode;
+
+    private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
+
+        @Override
+        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+
+            MenuInflater inflate = mode.getMenuInflater();
+            inflate.inflate(R.menu.principal_alimento_selecionado, menu);
+            return true;
+        }
+
+        @Override
+        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+            return false;
+        }
+
+        @Override
+        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+
+            int itemId = item.getItemId();
+
+            if (itemId == R.id.menuItemAlterar) {
+                alterarAlimento();
+                mode.finish();
+                return true;
+            } else if (itemId == R.id.menuItemExcluir) {
+                excluirAlimento();
+                mode.finish();
+                return true;
+            }
+
+            return false;
+        }
+
+        @Override
+        public void onDestroyActionMode(ActionMode mode) {
+            if (viewSelecionada != null){
+                viewSelecionada.setBackgroundColor(Color.TRANSPARENT);
+            }
+            actionMode         = null;
+            viewSelecionada    = null;
+            listViewAlimento.setEnabled(true);
+        }
+    };
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -51,15 +100,32 @@ public class MenuActivity extends AppCompatActivity {
         listViewAlimento.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                Alimento alimento = (Alimento) listViewAlimento.getItemAtPosition(position);
-
-                Toast.makeText(getApplicationContext(),
-                        getString(R.string.alimento_nome)
-                                + alimento.getNome() + getString(R.string.foi_clicado),
-                        Toast.LENGTH_SHORT).show();
+                posicaoSelecionada = position;
+                alterarAlimento();
             }
         });
+
+        listViewAlimento.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+        listViewAlimento.setOnItemLongClickListener(
+                (parent, view, position, id) -> {
+                    if (actionMode != null) {
+                        return false;
+                    }
+                    posicaoSelecionada = position;
+
+                    view.setBackgroundColor(Color.LTGRAY);
+
+                    viewSelecionada = view;
+
+                    listViewAlimento.setEnabled(false);
+
+                    actionMode = startSupportActionMode(mActionModeCallback);
+
+                    return true;
+                }
+
+        );
+
 
         popularLista();
     }
@@ -91,8 +157,7 @@ public class MenuActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode,
                                     int resultCode,
                                     Intent data) {
-
-        //super.onActivityResult(requestCode, resultCode, data);
+        super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
 
             Bundle bundle = data.getExtras();
@@ -124,18 +189,18 @@ public class MenuActivity extends AppCompatActivity {
         }
     }
 
-    private void excluirPessoa(){
+    private void excluirAlimento(){
 
         alimentos.remove(posicaoSelecionada);
         listaAdapter.notifyDataSetChanged();
     }
-/*
-    private void alterarPessoa(){
 
-        Alimento alimento = alientos.get(posicaoSelecionada);
+    private void alterarAlimento(){
 
-        AlimentoActivity.alterarAlimento(this, alimento);
-    }*/
+        Alimento alimento = alimentos.get(posicaoSelecionada);
+
+        //AlimentoActivity.alterarAlimento(this, alimento);
+    }
 
     public void abrirSobre(View view){
         SobreActivity.sobre(this);
