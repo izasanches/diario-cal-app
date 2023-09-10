@@ -11,4 +11,20 @@
         android:id="@+id/menuItemSobre"
         android:title="@string/sobre"
         app:showAsAction="ifRoom" />
+    <group
+        android:id="@+id/groupTemas"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/menuItemEscuro"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:title="@string/escuro" />
+        <item
+            android:id="@+id/menuItemClaro"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:title="@string/claro" />
+    </group>
 </menu>

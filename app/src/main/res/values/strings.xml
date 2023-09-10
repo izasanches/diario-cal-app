@@ -55,5 +55,8 @@
     <string name="edicao_alimento">" Food edit"</string>
     <string name="erro_unidade_medida">" You must select a unit of measurement"</string>
     <string name="autor_aluna">" Student: Izabele Sanches de Medeiros"</string>
+    <string name="claro">Light</string>
+    <string name="escuro">Dark</string>
+    <string name="configuracoes">Settings</string>
 
 </resources>

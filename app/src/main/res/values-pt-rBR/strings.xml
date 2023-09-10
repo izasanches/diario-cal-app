@@ -57,4 +57,7 @@
     <string name="alterar">Alterar</string>
     <string name="cadastro_alimento">Cadastro de alimento</string>
     <string name="edicao_alimento">Edição de alimento</string>
+    <string name="claro">Claro</string>
+    <string name="escuro">Escuro</string>
+    <string name="configuracoes">Configurações</string>
 </resources>
