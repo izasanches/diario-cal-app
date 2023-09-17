@@ -11,10 +11,10 @@ import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import com.projeto.diariocal.persistencia.AlimentosDatabase;
 
 public class AlimentoActivity extends AppCompatActivity {
 
@@ -30,13 +30,14 @@ public class AlimentoActivity extends AppCompatActivity {
     public static final int NOVO = 1;
     public static final int ALTERAR = 2;
     public static final String MODO = "MODO";
+    public static final String ID = "ID";
+    private static int id = 0;
     private int modo;
-    private String nomeOriginal, categoriaOriginal;
-    private Double quantidadeOriginal;
-    private UnidadeMedida unidadeMedidaOriginal;
-    private Boolean aliFrescoOriginal;
+    private String categoriaOriginal;
+    private int unidadeMedidaOriginal;
+    private Alimento alimento;
 
-    public static void novoAlimento(AppCompatActivity activity){
+    public static void novoAlimento(AppCompatActivity activity) {
         Intent intent = new Intent(activity, AlimentoActivity.class);
         intent.putExtra(MODO, NOVO);
         activity.startActivityForResult(intent, NOVO);
@@ -46,19 +47,8 @@ public class AlimentoActivity extends AppCompatActivity {
         Intent intent = new Intent(activity, AlimentoActivity.class);
 
         intent.putExtra(MODO, ALTERAR);
-        intent.putExtra(NOME, alimento.getNome());
-
-        intent.putExtra(MODO, ALTERAR);
-        intent.putExtra(QUANTIDADE_CAL, alimento.getQuantidadeCal());
-
-        intent.putExtra(MODO, ALTERAR);
-        intent.putExtra(UNIDADE_MEDIDA, alimento.getUnidadeMedida());
-
-        intent.putExtra(MODO, ALTERAR);
-        intent.putExtra(CATEGORIA, alimento.getCategoria());
-
-        intent.putExtra(MODO, ALTERAR);
-        intent.putExtra(ALIMENTO_FRESCO, alimento.isAlimentoFresco());
+        intent.putExtra(ID, alimento.getId());
+        id = alimento.getId();
 
         activity.startActivityForResult(intent, ALTERAR);
     }
@@ -93,7 +83,7 @@ public class AlimentoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_alimento);
 
         ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null){
+        if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
@@ -106,49 +96,64 @@ public class AlimentoActivity extends AppCompatActivity {
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
 
-        if (bundle != null){
+        if (bundle != null) {
 
             modo = bundle.getInt(MODO, NOVO);
 
-            if (modo == NOVO){
+            if (modo == NOVO) {
                 setTitle(getString(R.string.cadastro_alimento));
+                alimento = new Alimento("", 0.0, 0, "", false);
             } else {
-                nomeOriginal = bundle.getString(NOME);
-                editTextNome.setText(nomeOriginal);
-
-                quantidadeOriginal = bundle.getDouble(QUANTIDADE_CAL);
-                editTextQuantidade.setText(quantidadeOriginal.toString());
-
-                unidadeMedidaOriginal = (UnidadeMedida) bundle.get(UNIDADE_MEDIDA);
-
-                if (unidadeMedidaOriginal.value == UnidadeMedida.GRAMA.value)
-                    radioGroupUnidadeMedida.check(R.id.radioButtonGramas);
-                else
-                    radioGroupUnidadeMedida.check(R.id.radioButtonLitros);
-
-                categoriaOriginal = bundle.getString(CATEGORIA);
-                int posicaoSpinner = -1;
-
-                for (int i = 0; i < spinnerCategoria.getCount(); i++) {
-                    String categTexto = spinnerCategoria.getItemAtPosition(i).toString();
-
-                    if (categTexto.equals(categoriaOriginal)) {
-                        posicaoSpinner = i;
-                        break;
-                    }
-                }
-                spinnerCategoria.setSelection(posicaoSpinner);
-
-                aliFrescoOriginal = bundle.getBoolean(ALIMENTO_FRESCO);
-
-                cbAlimentoFresco.setChecked(aliFrescoOriginal);
 
                 setTitle(getString(R.string.edicao_alimento));
+
+                int id = bundle.getInt(ID);
+
+                AlimentosDatabase database = AlimentosDatabase.getDatabase(AlimentoActivity.this);
+
+
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        alimento = database.alimentoDao().queryForId(id);
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+
+                                editTextNome.setText(alimento.getNome());
+
+                                editTextQuantidade.setText(alimento.getQuantidadeCal() + "");
+
+                                unidadeMedidaOriginal = alimento.getUnidadeMedida();
+
+                                if (unidadeMedidaOriginal == 0/*UnidadeMedida.GRAMA.value*/)
+                                    radioGroupUnidadeMedida.check(R.id.radioButtonGramas);
+                                else
+                                    radioGroupUnidadeMedida.check(R.id.radioButtonLitros);
+
+                                categoriaOriginal = alimento.getCategoria();
+                                int posicaoSpinner = -1;
+
+                                for (int i = 0; i < spinnerCategoria.getCount(); i++) {
+                                    String categTexto = spinnerCategoria.getItemAtPosition(i).toString();
+
+                                    if (categTexto.equals(categoriaOriginal)) {
+                                        posicaoSpinner = i;
+                                        break;
+                                    }
+                                }
+                                spinnerCategoria.setSelection(posicaoSpinner);
+
+                                cbAlimentoFresco.setChecked(alimento.isAlimentoFresco());
+                            }
+                        });
+                    }
+                }).start();
             }
         }
     }
 
-    public void limparCampos(){
+    public void limparCampos() {
         editTextNome.setText(null);
         editTextQuantidade.setText(null);
         cbAlimentoFresco.setChecked(false);
@@ -158,11 +163,11 @@ public class AlimentoActivity extends AppCompatActivity {
         editTextNome.requestFocus();
 
         Toast.makeText(this,
-                              R.string.campos_limpos,
-                              Toast.LENGTH_SHORT).show();
+                R.string.campos_limpos,
+                Toast.LENGTH_SHORT).show();
     }
 
-    public void salvar(View view){
+    public void salvar(View view) {
         String nome = editTextNome.getText().toString();
         String quantidade = editTextQuantidade.getText().toString();
 
@@ -186,10 +191,10 @@ public class AlimentoActivity extends AppCompatActivity {
 
         int unidadeMedida;
 
-        if(radioGroupUnidadeMedida.getCheckedRadioButtonId() == R.id.radioButtonGramas)
-            unidadeMedida = UnidadeMedida.GRAMA.value;
+        if (radioGroupUnidadeMedida.getCheckedRadioButtonId() == R.id.radioButtonGramas)
+            unidadeMedida = 0;
         else
-            unidadeMedida = UnidadeMedida.MILILITRO.value;
+            unidadeMedida = 1;
 
         String categoria = (String) spinnerCategoria.getSelectedItem();
 
@@ -204,9 +209,9 @@ public class AlimentoActivity extends AppCompatActivity {
         boolean alimentoFresco = cbAlimentoFresco.isChecked();
 
         Intent intent = new Intent();
-        intent.putExtra(NOME,  nome);
+        intent.putExtra(NOME, nome);
         intent.putExtra(QUANTIDADE_CAL, quantidade);
-        intent.putExtra(UNIDADE_MEDIDA,  unidadeMedida);
+        intent.putExtra(UNIDADE_MEDIDA, unidadeMedida);
         intent.putExtra(CATEGORIA, categoria);
         intent.putExtra(ALIMENTO_FRESCO, alimentoFresco);
 
@@ -216,7 +221,7 @@ public class AlimentoActivity extends AppCompatActivity {
 
     }
 
-    public void salvar(){
+    public void salvar() {
         String nome = editTextNome.getText().toString();
         String quantidade = editTextQuantidade.getText().toString();
 
@@ -240,7 +245,7 @@ public class AlimentoActivity extends AppCompatActivity {
 
         int unidadeMedida;
 
-        if(radioGroupUnidadeMedida.getCheckedRadioButtonId() == R.id.radioButtonGramas)
+        if (radioGroupUnidadeMedida.getCheckedRadioButtonId() == R.id.radioButtonGramas)
             unidadeMedida = UnidadeMedida.GRAMA.value;
         else
             unidadeMedida = UnidadeMedida.MILILITRO.value;
@@ -258,11 +263,12 @@ public class AlimentoActivity extends AppCompatActivity {
         boolean alimentoFresco = cbAlimentoFresco.isChecked();
 
         Intent intent = new Intent();
-        intent.putExtra(NOME,  nome);
+        intent.putExtra(NOME, nome);
         intent.putExtra(QUANTIDADE_CAL, quantidade);
-        intent.putExtra(UNIDADE_MEDIDA,  unidadeMedida);
+        intent.putExtra(UNIDADE_MEDIDA, unidadeMedida);
         intent.putExtra(CATEGORIA, categoria);
         intent.putExtra(ALIMENTO_FRESCO, alimentoFresco);
+        intent.putExtra(ID, id);
 
         setResult(Activity.RESULT_OK, intent);
 
@@ -270,11 +276,11 @@ public class AlimentoActivity extends AppCompatActivity {
 
     }
 
-    public void cancelar(View view){
+    public void cancelar(View view) {
         onBackPressed();
     }
 
-    public void cancelar(){
+    public void cancelar() {
         onBackPressed();
     }
 

@@ -58,5 +58,9 @@
     <string name="claro">Light</string>
     <string name="escuro">Dark</string>
     <string name="configuracoes">Settings</string>
+    <string name="deseja_realmente_apagar">Do you really want to delete the food?</string>
+    <string name="confirmacao">Confirmation</string>
+    <string name="sim">yes</string>
+    <string name="nao">no</string>
 
 </resources>

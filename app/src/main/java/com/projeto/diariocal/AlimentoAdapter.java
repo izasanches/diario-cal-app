@@ -75,10 +75,10 @@ public class AlimentoAdapter extends BaseAdapter {
         holder.textViewValorQuantidadeCal.setText(quantidadeCal);
 
         switch(alimentos.get(i).getUnidadeMedida()){
-            case GRAMA:
+            case 0:
                 holder.textViewValorUnidadeMedida.setText(R.string.gramas);
                 break;
-            case MILILITRO:
+            case 1:
                 holder.textViewValorUnidadeMedida.setText(R.string.ml);
                 break;
         }

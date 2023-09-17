@@ -60,4 +60,8 @@
     <string name="claro">Claro</string>
     <string name="escuro">Escuro</string>
     <string name="configuracoes">Configurações</string>
+    <string name="deseja_realmente_apagar">Deseja realmente apagar o alimento?</string>
+    <string name="confirmacao">Confirmação</string>
+    <string name="sim">sim</string>
+    <string name="nao">não</string>
 </resources>
